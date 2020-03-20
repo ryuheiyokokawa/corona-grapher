@@ -8,10 +8,10 @@ class ICountry extends Model {
     //     return 'sqlite'
     // }
     provinces() {
-        return this.hasMany('App/Models/IProvince')
+        return this.hasMany('App/Models/IProvince','id','country_id')
     }
     days() {
-        return this.hasMany('App/Models/IDay')
+        return this.hasMany('App/Models/IDay','id', 'country_id')
     }
 }
 

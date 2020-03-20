@@ -8,10 +8,10 @@ class IProvince extends Model {
     //     return 'sqlite'
     // }
     country() {
-        return this.belongsTo('App/Models/ICountry')
+        return this.hasOne('App/Models/ICountry','country_id','id')
     }
     days() {
-        return this.hasMany('App/Models/IDay')
+        return this.hasMany('App/Models/IDay','id','province_id')
     }
 }
 

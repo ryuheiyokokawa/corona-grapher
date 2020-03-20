@@ -1,0 +1,38 @@
+# Maybe custom scalr
+
+type Country {
+    id: Int!
+    name: String!
+    lat: Float!
+    long: Float!
+    provinces: [Province]
+    days: [Day]
+}
+
+type Province {
+    id: Int!
+    name: String!
+    lat: Float!
+    long: Float!
+    country_id: Int!
+    country: Country
+    days: [Day]
+}
+
+type Day {
+    id: Int!
+    date: String!
+    country_id: Int!
+    province_id: Int!
+    confirmed: Int!
+    recovered: Int!
+    deaths: Int!
+    province: Province
+    country: Country
+}
+
+type Query {
+    getCountries: [Country]
+    getProvinces: [Province]
+    getDays: [Day]
+}

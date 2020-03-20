@@ -133,7 +133,7 @@ module.exports = {
   */
   csrf: {
     enable: true,
-    methods: ['POST', 'PUT', 'DELETE'],
+    methods: [ 'PUT', 'DELETE'],//disabled 'POST' for now since GraphIQL is unhappy
     filterUris: [],
     cookieOptions: {
       httpOnly: false,
