@@ -4,6 +4,8 @@ const IDay = use ('App/Models/IDay')
 
 module.exports = {
     Query: {
+        
+        //All data queries
         getCountries: async () => {
             const countries = await ICountry
             .query()
@@ -29,5 +31,7 @@ module.exports = {
             
             return days.toJSON()
         }
+
+        //Build the single lookups with where queries
     }
 }

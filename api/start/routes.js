@@ -18,7 +18,7 @@ const Route = use('Route')
 const GraphQLServer = use('GraphQLServer')
 
 
-Route.on('/').render('welcome')
+//Route.on('/').render('welcome')
 
 Route.post('/', (context) => {
     return GraphQLServer.handle(context)

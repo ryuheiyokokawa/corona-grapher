@@ -2,6 +2,7 @@
 //Adonis
 const { Command } = require("@adonisjs/ace");
 const Env = use("Env");
+const Config = use('Config')
 const ICountry = use ('App/Models/ICountry')
 const IProvince = use ('App/Models/IProvince')
 const IDay = use ('App/Models/IDay')
@@ -10,6 +11,7 @@ const IDay = use ('App/Models/IDay')
 const csvtojson = require("csvtojson");
 const request = require('request')
 const moment = require('moment')
+const knex = require('knex')(Config.get('database.mysql'))//Want raw access at this point.
 
 
 //Constants
@@ -33,24 +35,58 @@ class Process extends Command {
   }
 
   static get description() {
-    return "Processes the latest covid 19 data into SQLITE before copying into MySQL";
+    return "Processes the latest COVID-19 data into MySQL";
   }
 
   async handle(args, options) {
-    this.info("Starting");
-    this.countries = {}
-    this.provinces = {}
-    this.days = {}
-    this._csvToJsonAll()
-    .then(this._jsonToSqlAll.bind(this))
-    .then(() => {
-      console.log('all done!')
-    })
-    .catch(e => {
-      //bad news bears
-      console.log(e);
-    });
+    await this._init()
   }
+  _init() {
+    return new Promise((resolve,reject) => {
+      this.info("Starting data injestion from John's Hopkin's Github account");
+      this.countries = {}
+      this.provinces = {}
+      this.days = {}
+      this._emptyTables()
+      .then(this._csvToJsonAll.bind(this))
+      .then(this._jsonToSqlAll.bind(this))
+      .then(() => {
+        this.success('All done! You can Ctrl+C now.')// I have yet to figure out how to disconnect the knex instance within Lucid
+        resolve()
+      })
+      .catch(e => {
+        //bad news bears
+        console.log(e);
+        reject(e)
+      });
+    })
+  }
+  _emptyTables() {
+    return new Promise((resolve,reject) => {
+      let tables = [
+        'i_days',
+        'i_provinces',
+        'i_countries'
+      ]
+      //Gotta delete the table data
+      let promises = []
+      tables.forEach((table,i) => {
+        promises[i] = knex(table).del()
+      })
+      //Gotta reset the increment
+      tables.forEach((table,i) => {
+        let counter = i + tables.length
+        promises[counter] = knex.raw(`ALTER TABLE ${table} AUTO_INCREMENT = 1`)
+      })
+      Promise.all(promises)
+      .then(() => {
+        knex.destroy()
+        resolve()
+      })
+      .catch(reject)
+    })
+  }
+    
   _csvToJsonAll() {
     return new Promise((resolve, reject) => {
       let promises = []
@@ -68,6 +104,7 @@ class Process extends Command {
         .fromStream(request.get(git_url + git_files[type]))
         .then(csvRow => {
           this[type + "_json"] = csvRow;
+          this.info(`Finished retrieving and converting ${type} csv data into json`)
           resolve()
         })
         .catch(reject)
@@ -78,6 +115,10 @@ class Process extends Command {
       this._storeCountries()
       .then(this._storeProvinces.bind(this))
       .then(this._storeDays.bind(this))
+      .then(() => {
+        this.info('Finished storing all json data')
+        resolve()
+      })
       .catch(reject)
     })
   }
@@ -104,9 +145,13 @@ class Process extends Command {
         storage_promises[counter] = this._saveCountry(this.countries[country])
         counter++;
       }
+      this.info('Number of Countries: ' + storage_promises.length)
 
       Promise.all(storage_promises)
-      .then(resolve)
+      .then(() => {
+        this.info('Finished inserting all countries')
+        resolve()
+      })
       .catch(reject)
     })
   }
@@ -146,9 +191,13 @@ class Process extends Command {
         storage_promises[counter] = this._saveProvince(this.provinces[province])
         counter++
       }
+      this.info('Number of Provinces: ' + storage_promises.length)
 
       Promise.all(storage_promises)
-      .then(resolve)
+      .then(() => {
+        this.info('Finished inserting all provinces')
+        resolve()
+      })
       .catch(reject)
 
     })
@@ -200,8 +249,14 @@ class Process extends Command {
         days_to_insert[counter] = this.days[key]
         counter++;
       }
+
+      this.info('Number of Unique Days-Provinces/Countries: ' + days_to_insert.length)
+
       this._saveDays(days_to_insert)
-      .then(resolve)
+      .then( () => {
+        this.info('Finished inserting all days')
+        resolve()
+      })
       .catch(reject)
 
     })
