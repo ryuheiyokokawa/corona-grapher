@@ -1,8 +1,5 @@
-import { 
-    GET_COUNTRIES_PROVINCES, 
-    GET_COUNTRIES, 
-    GET_PROVINCES,
-    GET_GRAPHS,
+import {
+    GET_GRAPHS
 } from '../queries/client'
 
 
@@ -13,12 +10,6 @@ export const resolvers = {
         },
         getGraph: (_, variables, {cache}) => {
             //return cache.readQuery({query: })
-        },
-        getCountries: (_, variables, {cache}) => {
-            return cache.readQuery({query:GET_COUNTRIES})
-        },
-        getProvinces: (_, variables, {cache}) => {
-            return cache.readQuery({query:GET_PROVINCES})
         }
     },
     Mutation: {

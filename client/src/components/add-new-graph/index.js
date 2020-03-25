@@ -1,9 +1,11 @@
 import React, {Fragment, useState} from 'react'
+import { useQuery } from "@apollo/react-hooks";
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import styled from 'styled-components'
 
 import GraphInputs from './graph-inputs'
+import { GET_ALL_GRAPHS,STORE_NEW_GRAPH } from '../../queries/client'
 
 const AddButton = styled.button`
     //Placement
@@ -27,11 +29,15 @@ const AddButton = styled.button`
 
 function AddNewGraph() {
     const [show, setShow] = useState(false);
+    useQuery(STORE_NEW_GRAPH)
+    let graph = {}
+    
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const handelSubmit = () => {
-        //Collect values,
+        //send graph to 
+        setShow(false)
     }
 
     return (
@@ -44,7 +50,10 @@ function AddNewGraph() {
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <GraphInputs/>
+                    <GraphInputs collectGraph={(currentGraph)=> {
+                        //This is stupid.  Don't worry, its a work in progress situation.
+                        graph = currentGraph
+                    }}/>
                     
                 </Modal.Body>
                 <Modal.Footer>

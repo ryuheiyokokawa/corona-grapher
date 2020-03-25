@@ -14,20 +14,31 @@ module.exports = {
             .fetch()
             return countries.toJSON()
         },
-        getProvinces: async () => {
-            const provinces = await IProvince
+        getProvinces: async (obj, args, context, info) => {
+            const provincesQuery = IProvince
             .query()
             .with('country')
             .with('days')
-            .fetch()
+            if(args.country_id) {
+                provincesQuery.where('country_id',args.country_id)
+            }
+            
+            const provinces = await provincesQuery.fetch()
             return provinces.toJSON()
         },
-        getDays: async () => {
-            const days = await IDay
+        getDays: async (obj, args, context, info) => {
+            const daysQuery = await IDay
             .query()
             .with('country')
             .with('province')
-            .fetch()
+            if(args.country_id) {
+                daysQuery.where('country_id', args.country_id)
+            }
+            if(args.province_id) {
+                daysQuery.where('province_id', args.province_id)
+            }
+
+            const days = daysQuery.fetch()
             
             return days.toJSON()
         }

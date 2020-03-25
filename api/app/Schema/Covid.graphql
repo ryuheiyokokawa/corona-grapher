@@ -33,6 +33,6 @@ type Day {
 
 type Query {
     getCountries: [Country]
-    getProvinces: [Province]
-    getDays: [Day]
+    getProvinces(country_id: ID): [Province]
+    getDays(country_id: ID, province_id: ID, startDate:String, endDate: String): [Day]
 }

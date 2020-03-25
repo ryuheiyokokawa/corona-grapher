@@ -161,46 +161,9 @@ export const GET_ALL_GRAPHS = gql`
     }
 `
 
-export const GET_COUNTRIES_PROVINCES = gql`
-    query getCountriesProvinces {
-        countries @client {
-            id
-            name
-        }
-        provinces @client {
-            id
-            name
-        }
-    }
-`
-
-export const GET_COUNTRIES = gql`
-    query getCountries {
-        countries @client {
-            id
-            name
-        }
-    }
-`
-
-export const GET_PROVINCES = gql`
-    query getProvinces {
-        provinces @client {
-            id
-            name
-        }
-    }
-`
-
 export const GET_GRAPHS = gql`
     query getGraphs {
         graphs @client
-    }
-`
-
-export const STORE_COUNTRIES_PROVINCES = gql`
-    mutation storeCountriesProvinces($countries: [Country], $provinces: [Province]) {
-        storeCountriesProvinces(countries:$countries, provinces: $provinces) @client
     }
 `
 
@@ -209,4 +172,3 @@ export const STORE_NEW_GRAPH = gql`
         storeNewGraph(graph:$graph) @client
     }
 `
-

@@ -28,6 +28,23 @@ export const PROVINCES = gql`
         }
     }
 `
+
+export const PROVINCES_FOR_COUTNRY = gql`
+    query provinces($country_id: ID!) {
+        provinces: getProvinces(country_id: $country_id) {
+            id
+            country_id
+            country {
+                id
+                name
+            }
+            name
+            lat
+            long
+        }
+    }
+`
+
 // Get both in one go.
 export const COUNTRIES_AND_PROVINCES = gql`
     query {

@@ -8,7 +8,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { TYPEDEFS  } from './queries/client'
+import { TYPEDEFS } from './queries/client'
 import { resolvers } from './resolvers'
 
 
@@ -25,14 +25,6 @@ const client = new ApolloClient({
   resolvers,
   assumeImmutableResults: true
 });
-
-let defaultSettings = {
-  graphs: [],
-  countries: [],
-  provinces: []
-}
-
-cache.writeData({data: defaultSettings})
 
 const AppWrapped = () => (
     <ApolloProvider client={client}>
