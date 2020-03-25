@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button'
 import styled from 'styled-components'
 
 import GraphInputs from './graph-inputs'
-import { GET_ALL_GRAPHS,STORE_NEW_GRAPH } from '../../queries/client'
 
 const AddButton = styled.button`
     //Placement
@@ -28,33 +27,24 @@ const AddButton = styled.button`
 `
 
 function AddNewGraph() {
-    const [show, setShow] = useState(false);
-    useQuery(STORE_NEW_GRAPH)
-    let graph = {}
-    
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    const handelSubmit = () => {
-        //send graph to 
-        setShow(false)
-    }
+    const [show, setShow] = useState(false)
+    const [submit,setSubmit] = useState(false)//used to send the submit signal down to GraphInputs
+    const handleClose = () => setShow(false)
+    const handleShow = () => setShow(true)
+    const handelSubmit = () => setSubmit(true)
 
     return (
         <Fragment>
-            <AddButton onClick={handleShow}>
-                +
-            </AddButton>
+            <AddButton onClick={handleShow}>+</AddButton>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <GraphInputs collectGraph={(currentGraph)=> {
-                        //This is stupid.  Don't worry, its a work in progress situation.
-                        graph = currentGraph
-                    }}/>
-                    
+                    <GraphInputs submit={submit} onSuccess={() => {
+                        setSubmit(false)//gotta reset this too or else it just adds an empty graph
+                        setShow(false)
+                    }} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>

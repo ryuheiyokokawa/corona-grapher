@@ -37,7 +37,9 @@ export const TYPEDEFS = gql`
 
     type Graph {
         id: String!
-        name: String!
+        title: String!
+        startDate: String!
+        endDate: String
         graphType: GraphType
     }
 
@@ -50,42 +52,30 @@ export const TYPEDEFS = gql`
     }
 
     type Pie {
-        affected: Affected
-        country: String!
-        province: String
-        startDate: String!
-        endDate: String
+        country: Country!
+        province: Province
     }
 
     type Line {
-        startDate: String!
-        endDate: String!
         sources: [LineSources]
     }
 
         type LineSources {
-            affected: Affected
-            country: String!
-            province: String
+            country: Country!
+            province: Province
         }
 
     type StackedBar {
-        startDate: String!
-        endDate: String
         sources: [StackedBarSources]
     }
         type StackedBarSources {
-            affected: Affected
-            country: String!
-            province: String
+            country: Country!
+            province: Province
         }
 
     type StackedArea {
-        affected: Affected
-        country: String!
-        province: String
-        startDate: String!
-        endDate: String!
+        country: Country!
+        province: Province
     }
 
     type Query {
@@ -105,55 +95,29 @@ export const GET_ALL_GRAPHS = gql`
         getAllGraphs @client {
             graphs {
                 id
-                name
+                title
+                startDate
+                endDate
                 graphType {
                     ... on Pie {
-                        affected {
-                            confirmed
-                            deaths
-                            recovered
-                        }
                         country
                         province
-                        startDate
-                        endDate
                     }
                     ... on Line {
-                        startDate
-                        endDate
                         sources {
-                            affected {
-                                confirmed
-                                deaths
-                                recovered
-                            }
                             country
                             province
                         }
                     }
                     ... on StackedBar {
-                        startDate
-                        endDate
                         sources {
-                            affected {
-                                confirmed
-                                deaths
-                                recovered
-                            }
                             country
                             province
                         }
                     }
                     ... on StackedArea {
-                        affected {
-                            confirmed
-                            deaths
-                            recovered
-                        }
                         country
                         province
-                        startDate
-                        endDate
                     }
                 }
             }
@@ -162,7 +126,7 @@ export const GET_ALL_GRAPHS = gql`
 `
 
 export const GET_GRAPHS = gql`
-    query getGraphs {
+    query {
         graphs @client
     }
 `

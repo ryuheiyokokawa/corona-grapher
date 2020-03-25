@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloProvider } from '@apollo/react-hooks';
-import ApolloClient from 'apollo-boost';
+import ApolloClient from 'apollo-boost/lib/index';
 import { InMemoryCache } from "apollo-cache-inmemory";
 
 import './index.css';
@@ -15,6 +15,12 @@ import { resolvers } from './resolvers'
 const cache = new InMemoryCache({
                 freezeResults: true
               })
+//init local client cache related stuff here.
+cache.writeData({
+    data: {
+      graphs: []
+    }
+})
 
 // TODO: Change below with environmental var. Make GraphQL config. 
 // Below uses the appolo client cache as part of the local state management.

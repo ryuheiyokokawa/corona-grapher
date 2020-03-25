@@ -1,29 +1,39 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useMutation } from "@apollo/react-hooks";
+import { v4 as uuidv4 } from 'uuid';
 
+
+//BS components
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
+//Datepicker
 import moment from 'moment'
 import DatePicker from "react-datepicker"; 
 import "react-datepicker/dist/react-datepicker.css";
 
+//Sub-components
 import CountrySelect from './inputs/country-select'
 import ProvinceSelect from './inputs/province-select'
+import { STORE_NEW_GRAPH } from '../../queries/client';
 
 
-const singleDefault = {
-}
-
+//State Defaults
+const titleDefault = 'Graph Title'
+const typeDefault = 'line'
+const startDefault = moment().add( -7,'days' ).toDate()
+const endDefault = new Date()
+const singleDefault = {}
 const multipleDefault = [{}]
 
-function GraphInputs({collectGraph}) {
+function GraphInputs({onSuccess, submit}) {
 
     // Shared inputs
-    const [title, setTitle] = useState('')
-    const [type, setType] = useState('line')
-    const [startDate, setStartDate] = useState( moment().add( -7,'days' ).toDate() )
-    const [endDate, setEndDate] = useState( new Date() )
+    const [title, setTitle] = useState(titleDefault)
+    const [type, setType] = useState(typeDefault)
+    const [startDate, setStartDate] = useState( startDefault )
+    const [endDate, setEndDate] = useState( endDefault )
     
     //Single (Pie, StackedArea)
     const [single, setSingle] = useState(singleDefault)
@@ -31,11 +41,50 @@ function GraphInputs({collectGraph}) {
     //Multiple (Line, StackedBar)
     const [multiple, setMultiple] = useState(multipleDefault)
 
+    //CurrentGraph Object
     const currentGraph = {title, type, startDate, endDate, single, multiple}
+        
+    const [addGraph, { data }] = useMutation(STORE_NEW_GRAPH)
+    useEffect(() => {
+        if(submit) {//Submit is a parent state passed to this component to indicate send
+            const graphType = {
+                __typename: currentGraph.type
+            }
+            if(currentGraph.type == 'pie' || currentGraph.type == 'stacked-area') {
+                graphType['country'] = currentGraph.single.country
+                graphType['province'] = currentGraph.single.province
+            } else {
+                graphType['sources'] = currentGraph.multiple
+            }
 
-    collectGraph(()=> {
-        return currentGraph
-    })
+            const newGraph = {
+                id: uuidv4(),
+                title: currentGraph.title,
+                startDate: currentGraph.startDate,
+                endDate: currentGraph.endDate,
+                graphType: graphType
+            }
+            try {
+                addGraph({variables: {graph: newGraph}})
+                
+                //Clear states
+                setTitle(titleDefault)
+                setType(typeDefault)
+                setStartDate(startDefault)
+                setEndDate(endDefault)
+                setSingle(singleDefault)
+                setMultiple(multipleDefault)
+
+                //Send signal back to the modal component
+                onSuccess()
+            } catch(e) {
+                //Maybe some sort of error for the form?
+                console.log(e)
+            }
+        }
+    }, [submit])
+
+
 
     return (
         <section>
