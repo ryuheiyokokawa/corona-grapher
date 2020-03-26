@@ -25,14 +25,29 @@ type Day {
     country_id: Int!
     province_id: Int!
     confirmed: Int!
-    recovered: Int!
     deaths: Int!
+    recovered: Int!
     province: Province
     country: Country
 }
+
+input GraphQueryLocation {
+    country_id: Int!,
+    province_id: Int
+}
+
+type Location {
+    country_id: Int!
+    province_id: Int
+    days: [Day]
+    country: Country
+    province: Province
+}
+
 
 type Query {
     getCountries: [Country]
     getProvinces(country_id: ID): [Province]
     getDays(country_id: ID, province_id: ID, startDate:String, endDate: String): [Day]
+    getGraphData(locations: [GraphQueryLocation], startDate:String!, endDate:String): [Location]
 }

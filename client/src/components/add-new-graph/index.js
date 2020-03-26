@@ -1,5 +1,4 @@
 import React, {Fragment, useState} from 'react'
-import { useQuery } from "@apollo/react-hooks";
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import styled from 'styled-components'
@@ -36,7 +35,7 @@ function AddNewGraph() {
     return (
         <Fragment>
             <AddButton onClick={handleShow}>+</AddButton>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>

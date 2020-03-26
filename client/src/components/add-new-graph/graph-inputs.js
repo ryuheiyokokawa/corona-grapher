@@ -44,19 +44,19 @@ function GraphInputs({onSuccess, submit}) {
     //CurrentGraph Object
     const currentGraph = {title, type, startDate, endDate, single, multiple}
         
-    const [addGraph, { data }] = useMutation(STORE_NEW_GRAPH)
+    const [addGraph,{data}] = useMutation(STORE_NEW_GRAPH)
     useEffect(() => {
         if(submit) {//Submit is a parent state passed to this component to indicate send
             const graphType = {
                 __typename: currentGraph.type
             }
-            if(currentGraph.type == 'pie' || currentGraph.type == 'stacked-area') {
+            if(currentGraph.type === 'pie' || currentGraph.type === 'stacked-area') {
                 graphType['country'] = currentGraph.single.country
                 graphType['province'] = currentGraph.single.province
             } else {
                 graphType['sources'] = currentGraph.multiple
             }
-
+            console.log(graphType)
             const newGraph = {
                 id: uuidv4(),
                 title: currentGraph.title,
@@ -72,15 +72,22 @@ function GraphInputs({onSuccess, submit}) {
                 setType(typeDefault)
                 setStartDate(startDefault)
                 setEndDate(endDefault)
-                setSingle(singleDefault)
-                setMultiple(multipleDefault)
-
+                setSingle({})
+                setMultiple([{}])
                 //Send signal back to the modal component
                 onSuccess()
             } catch(e) {
                 //Maybe some sort of error for the form?
                 console.log(e)
             }
+        } else {
+            //Need to reset the entire thing when we click on the add button
+            setTitle(titleDefault)
+            setType(typeDefault)
+            setStartDate(startDefault)
+            setEndDate(endDefault)
+            setSingle({})
+            setMultiple([{}])
         }
     }, [submit])
 
@@ -146,7 +153,7 @@ function GraphInputs({onSuccess, submit}) {
                     <Form.Row>
                         {/* Choose based on chart type */}
                         {
-                            (type == 'pie' || type == 'stacked-area') ? 
+                            (type === 'pie' || type === 'stacked-area') ? 
                             <SingleInputs 
                                 single={single} 
                                 setSingle={(data) => { 
@@ -202,6 +209,11 @@ function SingleInputs({single, setSingle}) {
 
 function MultipleInputs({multiple, setMultiple}) {
     const [count, setCount] = useState(0)//because react is stupid and won't re-render this component for some odd reason for 
+
+    useEffect(() => {
+        setCount(0)
+    },[multiple])
+
     const onChange = (data,i) => {
         let newMultiple = multiple
         newMultiple[i] = data

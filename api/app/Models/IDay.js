@@ -9,11 +9,11 @@ class IDay extends Model {
     // }
 
     country() {
-        return this.belongsTo('App/Models/ICountry','country_id')
+        return this.hasOne('App/Models/ICountry','country_id','id')
     }
 
     province() {
-        return this.belongsTo('App/Models/IProvince','province_id')
+        return this.hasOne('App/Models/IProvince','province_id','id')
     }
 
 }

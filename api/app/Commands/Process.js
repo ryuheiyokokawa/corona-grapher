@@ -17,15 +17,14 @@ const knex = require('knex')(Config.get('database.mysql'))//Want raw access at t
 //Constants
 const git_url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/'
 const git_files = {
-  confirmed:
-    "csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv",
-  deaths:
-    "csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv",
-  recovered:
-    "csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv"
+  confirmed:"csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv",
+  deaths: "csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv",
+  //recovered: "csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv"
 };
 const data_types = [
-  'confirmed', 'deaths', 'recovered'
+  'confirmed', 
+  'deaths', 
+  //'recovered'
 ]
 
 
@@ -230,7 +229,7 @@ class Process extends Command {
           delete days_only['Long']
           
           for(let date in days_only) {
-            let affected = days_only[date]
+            let affected = !days_only[date] ? 0 : days_only[date] //Had an issue where the data has nothing in it.
             if(typeof this.days[`${unique_header}-${date}`] == 'undefined') {
               this.days[`${unique_header}-${date}`] = {
                 country_id: this.countries[country].id,
@@ -238,11 +237,12 @@ class Process extends Command {
                 date: moment(date,'M/D/YYYY').format('YYYY-MM-DD')
               }
             }
-            this.days[`${unique_header}-${date}`][type] = affected
+            this.days[`${unique_header}-${date}`][type] = parseInt(affected)
           }
 
         })
       })
+
       let days_to_insert = []
       let counter = 0;
       for(let key in this.days) {
@@ -263,7 +263,6 @@ class Process extends Command {
   }
 
   async _saveDays(days_to_insert) {
-    //Hopefully use the createMany method
     await IDay.createMany(days_to_insert)
     return
   }

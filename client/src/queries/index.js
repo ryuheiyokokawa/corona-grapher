@@ -71,3 +71,26 @@ export const COUNTRIES_AND_PROVINCES = gql`
         }
     }
 `
+
+export const GET_GRAPH_DATA = gql`
+    query graphData($locations:[GraphQueryLocation]!, $startDate:String!, $endDate:String) {
+        graphData: getGraphData(locations: $locations, startDate: $startDate, endDate: $endDate) {
+            country_id
+            province_id
+            country {
+                id
+                name
+            }
+            province {
+                id
+                name
+            }
+            days {
+                date
+                confirmed
+                deaths
+                recovered
+            }
+        }
+    }
+`

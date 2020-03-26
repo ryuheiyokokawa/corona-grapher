@@ -1,25 +1,39 @@
 import React, {useState} from 'react'
 import Chart from './chart'
 import { useQuery } from '@apollo/react-hooks';
-import { COUNTRIES, PROVINCES } from '../../queries'
+import {GET_GRAPH_DATA} from '../../queries/index'
 
-
-function LineGraph({locationData}) {
-    const countries = locationData.countries
-    const provinces = locationData.provinces
-    const [graphdata,setGraphData] = useState(0)
-
+function LineGraph({graph}) {
+    let graphLocations = []
+    let countryMap = {}
+    let provinceMap = {}
+    graph.graphType.sources.map((location,i) => {
+        graphLocations[i] = {
+            country_id:location.country.id
+        }
+        countryMap[location.country.id] = location.country.name
+        if(location.province) {
+            graphLocations[i]['province_id'] = location.province.id
+            countryMap[location.province.id] = location.province.name
+        }
+    })
+    let query_vars = {
+        variables: {
+            locations: graphLocations,
+            startDate: graph.startDate,
+            endDate: graph.endDate
+        }
+    }
+    const {loading,error,data} = useQuery(GET_GRAPH_DATA, query_vars)
+    //console.log(error,data)
     return (
         <div className="graph-wrapper">
-            {graphdata ? (
-                    <Chart graphdata={graphdata}/> 
+            {data && data.graphData ? (
+                    <Chart graphData={data.graphData} countryMap={countryMap} provinceMap={provinceMap} /> 
                 ):(
-                    <div className="choose">Choose data below</div>
+                    <div className="loading">Loading</div>
                 )
             }
-            <div className="controls-wrapper">
-
-            </div>
         </div>
     )
 }

@@ -2,6 +2,11 @@ import { gql } from 'apollo-boost';
 
 export const TYPEDEFS = gql`
 
+    input GraphQueryLocation {
+        country_id: Int!
+        province_id: Int
+    }
+
     type Country {
         id: Int!
         name: String!
@@ -25,10 +30,17 @@ export const TYPEDEFS = gql`
         country_id: Int!
         province_id: Int!
         confirmed: Int!
-        recovered: Int!
         deaths: Int!
+        recovered: Int!
         province: Province
         country: Country
+    }
+    type Location {
+        country_id: Int!
+        province_id: Int
+        days: [Day]
+        country: Country
+        province: Province
     }
 
     type Graphs {

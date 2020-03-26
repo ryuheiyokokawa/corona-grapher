@@ -3,67 +3,69 @@ import {
   Switch,
   Route,
   Link,
-  useParams,
-  useRouteMatch
+  useRouteMatch,
+  useParams
 } from "react-router-dom";
+import { useQuery } from '@apollo/react-hooks';
+import { GET_GRAPHS } from '../queries/client'
 
 import LineGraph from './line'
 import PieGraph from './pie'
 import StackedBarGraph from './stacked-bar'
 import StackedAreaGraph from './stacked-area'
 
-
 const graphTypes = {
   line: {
-    name: 'Line',
+    name: 'line',
     component: LineGraph
   },
   pie: {
-    name: 'Pie',
+    name: 'pie',
     component: PieGraph
   },
-  stackedBar: {
-    name: 'Stacked Bar',
+  "stacked-bar": {
+    name: 'stacked-bar',
     component: StackedBarGraph
   },
-  stakcedArea: {
-    name: 'Stacked Area',
+  "stakced-area": {
+    name: 'stacked-area',
     component: StackedAreaGraph
   }
 }
 
 function Graphs() {
-  let { path, url } = useRouteMatch();
+  const { data } = useQuery(GET_GRAPHS)
+  const graphs = data.graphs
+  const graphsByKey = {}
+  graphs.map((graph,i) => {
+    graphsByKey[graph.id] = graph
+  })
 
   return (
       <div className="graphs-wrapper">
+        <h3>Graphs</h3>
         <ul>
-          {Object.keys(graphTypes).map((type) => {
-            let graphType = graphTypes[type]
+          {graphs.map((graph,i) => {
             return (
-              <li>
-                <Link to={`${url}/${type}`} >{graphType.name}</Link>
+              <li key={i}>
+                <Link to={`/graphs/${graph.id}`} >{graph.title}</Link>
               </li>
             )
           })}
         </ul>
         <Switch>
-            <Route exact path={path}>
-                <h3>Select a graph type.</h3>
-            </Route>
-            <Route path={`${path}/:graphType`}>
-              <GraphSwitch/>
-            </Route>
+          <Route path={`/graphs/:graphID`} children={<GraphSwitch graphsByKey={graphsByKey} />} />
         </Switch>
       </div>
   );
 }
 
-function GraphSwitch() {
-  let { graphType } = useParams()
-  let GraphComponent = graphType[graphType].component
-  return (<GraphComponent/>)
+function GraphSwitch({graphsByKey}) {
+  let {graphID} = useParams()
+  let graph = graphsByKey[graphID]
+  let type = graph.graphType['__typename']
+  let GraphComponent = graphTypes[type].component
+  return (<GraphComponent graph={graph}/>)
 }
-
 
 export default Graphs;

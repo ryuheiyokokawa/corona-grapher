@@ -10,10 +10,9 @@ class IDaySchema extends Schema {
       table.date('date')
       table.integer('country_id')
       table.integer('province_id')
-      table.bigInteger('confirmed')
-      table.bigInteger('deaths')
-      table.bigInteger('recovered')
-      table.integer('days')
+      table.bigInteger('confirmed').defaultTo(0)
+      table.bigInteger('deaths').defaultTo(0)
+      table.bigInteger('recovered').defaultTo(0)
       table.timestamps()
     })
   }
