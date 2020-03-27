@@ -38,3 +38,73 @@
     transform: rotate(360deg);
   }
 }
+
+
+@font-face {
+  font-family: "LeagueSpartan";
+  font-weight: normal;
+  font-style: normal;
+  src: url('/fonts/1leaguespartan-bold-webfont.woff2') format("woff2"), url('/fonts/1leaguespartan-bold-webfont.woff') format("woff");;
+  font-display: swap;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+
+h1 {
+  font-family: "LeagueSpartan";
+  font-size: 3rem;
+  @include media-breakpoint-down(sm) {
+    font-size: 2rem;
+  }
+}
+
+h2 {
+  font-family: "LeagueSpartan";
+  font-size: 2rem;
+  font-weight: 600;
+  @include media-breakpoint-down(sm) {
+    font-size: 1.5rem;
+  }
+}
+
+h3 {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.75rem;
+  text-decoration: underline;
+  @include media-breakpoint-down(sm) {
+    font-size: 1.25rem;
+  }
+}
+
+h4 {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  text-decoration: underline;
+  @include media-breakpoint-down(sm) {
+    font-size: 1.1rem;
+  }
+}
+
+p {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.33rem;  
+  margin-bottom: 2rem;
+  @include media-breakpoint-down(sm) {
+    font-size: 1rem;
+  }
+}
+
+ul,ol {
+  li {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.33rem;  
+    @include media-breakpoint-down(sm) {
+      font-size: 1rem;
+    }
+  }
+}

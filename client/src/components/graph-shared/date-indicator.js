@@ -2,7 +2,6 @@ import React from 'react'
 import moment from 'moment'
 
 function DateIndicator({startDate, endDate}) {
-    console.log('test')
     if(startDate && endDate) {
         return (
             <div>

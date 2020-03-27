@@ -1,6 +1,7 @@
 {
-  "name": "client",
+  "name": "corona-grapher-front-end",
   "version": "0.1.0",
+  "author": "Ryuhei Yokokawa <ryuhei@y-designs.com> (https://portfolio.noindex.co)",
   "private": true,
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
