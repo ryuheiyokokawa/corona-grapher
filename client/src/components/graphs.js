@@ -28,7 +28,7 @@ const graphTypes = {
     name: 'stacked-bar',
     component: StackedBarGraph
   },
-  "stakced-area": {
+  "stacked-area": {
     name: 'stacked-area',
     component: StackedAreaGraph
   }
@@ -76,6 +76,7 @@ function GraphSwitch({graphsByKey}) {
   let {graphID} = useParams()
   let graph = graphsByKey[graphID]
   let type = graph.graphType['__typename']
+  console.log(type)
   let GraphComponent = graphTypes[type].component
   return (<GraphComponent graph={graph}/>)
 }

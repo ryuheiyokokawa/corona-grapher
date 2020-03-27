@@ -5,6 +5,8 @@ import {Col, Row} from 'react-bootstrap'
 import {lineColors} from '../graph-shared/colors'
 import DateIndicator from '../graph-shared/date-indicator'
 
+
+//Line Chart
 function Chart({graphQuery, graphData,countryMap,provinceMap}) {
     let line_sources = []
     let legend_data = []
@@ -31,9 +33,7 @@ function Chart({graphQuery, graphData,countryMap,provinceMap}) {
                     <VictoryAxis fixLabelOverlap={true} tickFormat={(t) => {
                         return moment(t).format('MM/DD/YYYY')
                     }}/>
-                    <VictoryAxis dependentAxis
-                        tickFormat={(x) => (x)}
-                    />
+                    <VictoryAxis dependentAxis tickFormat={(x) => (x)} />
                     
                     {graphData.map((location,i) => {
                         let stroke = lineColors[i]
