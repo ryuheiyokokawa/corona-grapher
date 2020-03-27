@@ -28,7 +28,7 @@ export const resolvers = {
                 ]
                 //cache.writeData({data: {graphs: newGraphs} })
                 cache.writeQuery({query: GET_GRAPHS, data: {graphs: newGraphs}})
-                return null
+                return newGraph
             } catch(e) {
                 console.log(e)
                 return false

@@ -3,9 +3,10 @@ import {
   Switch,
   Route,
   Link,
-  useRouteMatch,
-  useParams
+  useParams,
+  Redirect
 } from "react-router-dom";
+import {Col, Row, Container} from 'react-bootstrap'
 import { useQuery } from '@apollo/react-hooks';
 import { GET_GRAPHS } from '../queries/client'
 
@@ -35,7 +36,13 @@ const graphTypes = {
 
 function Graphs() {
   const { data } = useQuery(GET_GRAPHS)
-  const graphs = data.graphs
+  let graphs
+  if(data.graphs.length) {
+    graphs = data.graphs
+  } else {
+    return (<Redirect to="/"/>)
+  }
+  
   const graphsByKey = {}
   graphs.map((graph,i) => {
     graphsByKey[graph.id] = graph
@@ -43,19 +50,24 @@ function Graphs() {
 
   return (
       <div className="graphs-wrapper">
-        <h3>Graphs</h3>
-        <ul>
-          {graphs.map((graph,i) => {
-            return (
-              <li key={i}>
-                <Link to={`/graphs/${graph.id}`} >{graph.title}</Link>
-              </li>
-            )
-          })}
-        </ul>
-        <Switch>
-          <Route path={`/graphs/:graphID`} children={<GraphSwitch graphsByKey={graphsByKey} />} />
-        </Switch>
+        <Container>
+          <Row>
+            <Col>
+              <ul className="nav">
+                {graphs.map((graph,i) => {
+                  return (
+                    <li key={i} className="nav-item">
+                      <Link className="nav-link" to={`/graphs/${graph.id}`} >{graph.title}</Link>
+                    </li>
+                  )
+                })}
+              </ul>
+            </Col>
+          </Row>
+          <Switch>
+            <Route path={`/graphs/:graphID`} children={<GraphSwitch graphsByKey={graphsByKey} />} />
+          </Switch>
+        </Container>
       </div>
   );
 }

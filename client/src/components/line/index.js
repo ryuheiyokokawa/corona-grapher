@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import Chart from './chart'
 import { useQuery } from '@apollo/react-hooks';
 import {GET_GRAPH_DATA} from '../../queries/index'
@@ -7,6 +7,7 @@ function LineGraph({graph}) {
     let graphLocations = []
     let countryMap = {}
     let provinceMap = {}
+
     graph.graphType.sources.map((location,i) => {
         graphLocations[i] = {
             country_id:location.country.id
@@ -17,6 +18,7 @@ function LineGraph({graph}) {
             countryMap[location.province.id] = location.province.name
         }
     })
+
     let query_vars = {
         variables: {
             locations: graphLocations,
@@ -24,8 +26,10 @@ function LineGraph({graph}) {
             endDate: graph.endDate
         }
     }
-    const {loading,error,data} = useQuery(GET_GRAPH_DATA, query_vars)
-    //console.log(error,data)
+
+    //TODO: Might add error/loading catch later.
+    const {data} = useQuery(GET_GRAPH_DATA, query_vars)
+    
     return (
         <div className="graph-wrapper">
             {data && data.graphData ? (

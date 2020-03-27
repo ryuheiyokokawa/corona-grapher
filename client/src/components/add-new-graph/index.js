@@ -23,9 +23,10 @@ const AddButton = styled.button`
     
     // Text
     text-align: center;
+    font-size: 50px;
 `
 
-function AddNewGraph() {
+function AddNewGraph({history}) {
     const [show, setShow] = useState(false)
     const [submit,setSubmit] = useState(false)//used to send the submit signal down to GraphInputs
     const handleClose = () => setShow(false)
@@ -37,10 +38,10 @@ function AddNewGraph() {
             <AddButton onClick={handleShow}>+</AddButton>
             <Modal show={show} onHide={handleClose} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Add Your Graph</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <GraphInputs submit={submit} onSuccess={() => {
+                    <GraphInputs submit={submit} onSuccess={(id) => {
                         setSubmit(false)//gotta reset this too or else it just adds an empty graph
                         setShow(false)
                     }} />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useMutation } from "@apollo/react-hooks";
 import { v4 as uuidv4 } from 'uuid';
+import {withRouter} from 'react-router-dom'
 
 
 //BS components
@@ -24,11 +25,9 @@ const titleDefault = 'Graph Title'
 const typeDefault = 'line'
 const startDefault = moment().add( -7,'days' ).toDate()
 const endDefault = new Date()
-const singleDefault = {}
-const multipleDefault = [{}]
 
-function GraphInputs({onSuccess, submit}) {
-
+function GraphInputs({onSuccess, submit, history}) {
+    
     // Shared inputs
     const [title, setTitle] = useState(titleDefault)
     const [type, setType] = useState(typeDefault)
@@ -36,15 +35,21 @@ function GraphInputs({onSuccess, submit}) {
     const [endDate, setEndDate] = useState( endDefault )
     
     //Single (Pie, StackedArea)
-    const [single, setSingle] = useState(singleDefault)
+    const [single, setSingle] = useState({})
 
     //Multiple (Line, StackedBar)
-    const [multiple, setMultiple] = useState(multipleDefault)
+    const [multiple, setMultiple] = useState([{}])
 
     //CurrentGraph Object
     const currentGraph = {title, type, startDate, endDate, single, multiple}
         
-    const [addGraph,{data}] = useMutation(STORE_NEW_GRAPH)
+    const [addGraph,{data}] = useMutation(STORE_NEW_GRAPH,{
+        onCompleted: (data) => {
+            let redirectID = data.storeNewGraph.id
+            history.push(`/graphs/${redirectID}`)
+        }
+    })
+
     useEffect(() => {
         if(submit) {//Submit is a parent state passed to this component to indicate send
             const graphType = {
@@ -56,7 +61,7 @@ function GraphInputs({onSuccess, submit}) {
             } else {
                 graphType['sources'] = currentGraph.multiple
             }
-            console.log(graphType)
+                        
             const newGraph = {
                 id: uuidv4(),
                 title: currentGraph.title,
@@ -66,22 +71,17 @@ function GraphInputs({onSuccess, submit}) {
             }
             try {
                 addGraph({variables: {graph: newGraph}})
-                
-                //Clear states
-                setTitle(titleDefault)
-                setType(typeDefault)
-                setStartDate(startDefault)
-                setEndDate(endDefault)
-                setSingle({})
-                setMultiple([{}])
                 //Send signal back to the modal component
                 onSuccess()
             } catch(e) {
                 //Maybe some sort of error for the form?
                 console.log(e)
+
+                //TODO: implement onFail along with validation
+                //onFail()
             }
         } else {
-            //Need to reset the entire thing when we click on the add button
+            //Need to clear the states when we click on the add button
             setTitle(titleDefault)
             setType(typeDefault)
             setStartDate(startDefault)
@@ -90,7 +90,6 @@ function GraphInputs({onSuccess, submit}) {
             setMultiple([{}])
         }
     }, [submit])
-
 
 
     return (
@@ -118,6 +117,7 @@ function GraphInputs({onSuccess, submit}) {
                                 <option value="stacked-bar">Stacked Bar</option>
                                 <option value="stacked-area">Stacked Area</option>
                             </Form.Control>
+                            <p>Line currently only plots confirmed.  Will add option later.</p>
                         </Col>
                     </Form.Row>
                 </Form.Group>
@@ -175,7 +175,7 @@ function GraphInputs({onSuccess, submit}) {
     )
 }
 
-export default GraphInputs
+export default withRouter(GraphInputs)
 
 
 function SingleInputs({single, setSingle}) {
