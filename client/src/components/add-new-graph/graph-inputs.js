@@ -3,7 +3,6 @@ import { useMutation } from "@apollo/react-hooks";
 import { v4 as uuidv4 } from 'uuid';
 import {withRouter} from 'react-router-dom'
 
-
 //BS components
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
@@ -149,26 +148,24 @@ function GraphInputs({onSuccess, submit, history}) {
                     </Form.Row>
                 </Form.Group>
                 
-                <Form.Group>
-                    <Form.Row>
-                        {/* Choose based on chart type */}
-                        {
-                            (type === 'pie' || type === 'stacked-area') ? 
-                            <SingleInputs 
-                                single={single} 
-                                setSingle={(data) => { 
-                                    setSingle(data)
-                                }} 
-                            /> : 
-                            <MultipleInputs 
-                                multiple={multiple} 
-                                setMultiple={(data)=> { 
-                                    setMultiple(data)
-                                }} 
-                            />
-                        }
-                    </Form.Row>
-                </Form.Group>
+        
+                {/* Choose based on chart type */}
+                {
+                    (type === 'pie' || type === 'stacked-area') ? 
+                    <SingleInputs 
+                        single={single} 
+                        setSingle={(data) => { 
+                            setSingle(data)
+                        }} 
+                    /> : 
+                    <MultipleInputs 
+                        multiple={multiple} 
+                        setMultiple={(data)=> { 
+                            setMultiple(data)
+                        }} 
+                    />
+                }
+                    
                 
             </Form>
         </section>
@@ -234,10 +231,17 @@ function MultipleInputs({multiple, setMultiple}) {
 
     return (
         <Form.Group>
-            <Button onClick={addRow}>Add Source</Button>
+            <Form.Row className="pb-2">
+                <Button onClick={addRow}>Add Source</Button>
+            </Form.Row>
             {multiple.map((current, i) => {
                 return (
-                    <MultipleInput key={i} current={current} onChange={(data)=> onChange(data,i)} deleteMe={() => deleteMe(i)}/>
+                    <MultipleInput 
+                        key={i} 
+                        current={current} 
+                        onChange={(data)=> onChange(data,i)} 
+                        deleteMe={() => deleteMe(i)}
+                    />
                 )
             })}
         </Form.Group>
@@ -247,33 +251,32 @@ function MultipleInputs({multiple, setMultiple}) {
 function MultipleInput({ current, onChange, deleteMe}) {
     const [data,setData] = useState({})
     return (
-        <Form.Group>
-            <Form.Row>
-                <CountrySelect current={current} onSelect={(selected)=> {
-                    let country = selected[0]
-                    //I'm specifically overwriting below if the user changes the data we need to disable province selection.
+        <Form.Row  className="pb-2">
+            <CountrySelect current={current} onSelect={(selected)=> {
+                let country = selected[0]
+                //I'm specifically overwriting below if the user changes the data we need to disable province selection.
+                let newData = {
+                    country: country
+                }
+                setData(newData)
+                onChange(newData)
+            }}/>
+            { data.country ? 
+            <ProvinceSelect 
+                current={current}
+                country_id={data.country.id}
+                onSelect={(selected) => {
+                    let province = selected[0]
                     let newData = {
-                        country: country
+                        ...data,
+                        province: province
                     }
                     setData(newData)
                     onChange(newData)
-                }}/>
-                { data.country ? 
-                <ProvinceSelect 
-                    current={current}
-                    country_id={data.country.id}
-                    onSelect={(selected) => {
-                        let province = selected[0]
-                        let newData = {
-                            ...data,
-                            province: province
-                        }
-                        setData(newData)
-                        onChange(newData)
-                    }}
-                />: null}
-                <Button onClick={deleteMe}>X</Button>
-            </Form.Row>
-        </Form.Group>
+                }}
+            />: null}
+            <Button onClick={deleteMe}>X</Button>
+            
+        </Form.Row>
     )
 }

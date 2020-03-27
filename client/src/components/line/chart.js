@@ -3,8 +3,9 @@ import {VictoryChart, VictoryLine, VictoryAxis, VictoryLegend} from 'victory'
 import moment from 'moment'
 import {Col, Row} from 'react-bootstrap'
 import {lineColors} from '../graph-shared/colors'
+import DateIndicator from '../graph-shared/date-indicator'
 
-function Chart({graphData,countryMap,provinceMap}) {
+function Chart({graphQuery, graphData,countryMap,provinceMap}) {
     let line_sources = []
     let legend_data = []
     graphData.map((location,i) => {
@@ -49,7 +50,7 @@ function Chart({graphData,countryMap,provinceMap}) {
                 </VictoryChart>
             </Col>
             <Col sm="2">
-            
+                <DateIndicator startDate={graphQuery.variables.startDate} endDate={graphQuery.variables.endDate} />
                 <VictoryLegend x={0} y={0}
                     width="100%"
                     height="100%"
@@ -60,6 +61,7 @@ function Chart({graphData,countryMap,provinceMap}) {
                     style={{ border: { stroke: "black" }, title: {fontSize: 10 } }}
                     data={legend_data}
                 />
+                
                 
             </Col>
         </Row>

@@ -33,7 +33,7 @@ function LineGraph({graph}) {
     return (
         <div className="graph-wrapper">
             {data && data.graphData ? (
-                    <Chart graphData={data.graphData} countryMap={countryMap} provinceMap={provinceMap} /> 
+                    <Chart graphQuery={query_vars} graphData={data.graphData} countryMap={countryMap} provinceMap={provinceMap} /> 
                 ):(
                     <div className="loading">Loading</div>
                 )
