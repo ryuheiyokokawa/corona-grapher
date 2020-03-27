@@ -1,5 +1,5 @@
 import React from 'react'
-import {VictoryChart, VictoryLine, VictoryAxis, VictoryLegend} from 'victory'
+import {VictoryChart, VictoryLine, VictoryAxis, VictoryVoronoiContainer, VictoryLegend} from 'victory'
 import moment from 'moment'
 import {Col, Row} from 'react-bootstrap'
 import {lineColors} from '../graph-shared/colors'
@@ -29,7 +29,18 @@ function Chart({graphQuery, graphData,countryMap,provinceMap}) {
     return (
         <Row>
             <Col sm="10" >
-                <VictoryChart scale={{ x: 'time' }}>
+                <VictoryChart 
+                    scale={{ x: 'time' }} 
+                    containerComponent={
+                        <VictoryVoronoiContainer
+                        mouseFollowTooltips
+                        voronoiDimension="x"
+                        title="test"
+                        labels={({datum}) => {
+                            return `${datum.style.location_name}: ${datum.y}`
+                        }}
+                        />
+                    }>
                     <VictoryAxis fixLabelOverlap={true} tickFormat={(t) => {
                         return moment(t).format('MM/DD/YYYY')
                     }}/>
@@ -40,6 +51,7 @@ function Chart({graphQuery, graphData,countryMap,provinceMap}) {
                         return (
                             <VictoryLine 
                                 style={{
+                                    location_name: location.province_id ? provinceMap[location.province_id] : countryMap[location.country_id],
                                     data: { stroke: stroke },
                                     parent: { border: "1px solid #ccc"}
                                 }}
@@ -61,8 +73,6 @@ function Chart({graphQuery, graphData,countryMap,provinceMap}) {
                     style={{ border: { stroke: "black" }, title: {fontSize: 10 } }}
                     data={legend_data}
                 />
-                
-                
             </Col>
         </Row>
     )

@@ -1,5 +1,5 @@
 import React from 'react'
-import {VictoryChart, VictoryStack, VictoryArea, VictoryAxis, VictoryLegend} from 'victory'
+import {VictoryChart, VictoryStack, VictoryArea, VictoryAxis, VictoryVoronoiContainer, VictoryLegend} from 'victory'
 import moment from 'moment'
 import {Col, Row} from 'react-bootstrap'
 import {lineColors} from '../graph-shared/colors'
@@ -50,7 +50,7 @@ function Chart({graphQuery, graphData,countryMap,provinceMap}) {
                     }}/>
                     <VictoryAxis dependentAxis tickFormat={(x) => (x)}/>
                     <VictoryStack colorScale={lineColors}>
-                        <VictoryArea data={recovered}/>
+                        <VictoryArea data={recovered} />
                         <VictoryArea data={deaths}/>
                         <VictoryArea data={confirmed}/>
                     </VictoryStack>

@@ -19,12 +19,12 @@ const git_url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/maste
 const git_files = {
   confirmed:"csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv",
   deaths: "csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv",
-  //recovered: "csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv"
+  recovered: "csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv"
 };
 const data_types = [
   'confirmed', 
   'deaths', 
-  //'recovered'
+  'recovered'
 ]
 
 
