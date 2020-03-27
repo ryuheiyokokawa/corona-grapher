@@ -5,7 +5,16 @@ Its not super pre-architected so there's a lot to be desired, but it works (I pi
 
 That said, if you're curious about how bad Coronavirus is doing in different countries/provinces, this code will let you compare them.
 
+## What does it look like?
 ![Example Chart of US & China](https://raw.githubusercontent.com/ryuheiyokokawa/corona-grapher/master/china-us.jpg)
+Sort of like above.  You can add new graphs and choose countries/provinces to compare along with date range.
+You have the option of using various chart types including:
+- Line
+- Pie
+- Stacked Bar
+- Stacked Area
+Some of the chart implementations are not perfect, but are based on some examples from Victory.
+The Line charts are probably the best implemented at the moment.
 
 ## Packages/Tech used
 Backend:
