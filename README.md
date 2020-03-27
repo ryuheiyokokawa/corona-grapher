@@ -5,6 +5,8 @@ Its not super pre-architected so there's a lot to be desired, but it works (I pi
 
 That said, if you're curious about how bad Coronavirus is doing in different countries/provinces, this code will let you compare them.
 
+![Example Chart of US & China](https://raw.githubusercontent.com/ryuheiyokokawa/corona-grapher/master/china-us.jpg)
+
 ## Packages/Tech used
 Backend:
 - Adonis (Laravel in Node.js)
