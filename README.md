@@ -25,7 +25,7 @@ Backend:
 
 Frontend:
 - React / React starter kit
-- Functional components (getting better at hooks instead of classic life cycle/Redux)
+- Functional components (more hooks, no redux)
 - Apollo Client/Cache
 - Victory from Formidable
 - Momentjs
@@ -57,4 +57,4 @@ Sometimes the John's Hopkins folks change the data structure so if it stops runn
 
 ## Why did you use Adonis and not Express
 I like Laravel. But I like Node.js better than PHP.
-Also, Adonis offers commandline command building which is super handy when you're working on a project like this that needs to have data reloaded everytime.
+Also, Adonis offers a built-in command builder which is super handy when you're working on a project like this that needs to have data reloaded every day.
