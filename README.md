@@ -1,4 +1,4 @@
-# Corona Virus Grapher
+# Coronavirus Grapher
 This is a toy project that I'm doing as a way to get used to some advancements in React and to get a better grasp of how crazy this situation is (I'm talking Corona here).
 
 Its not super pre-architected so there's a lot to be desired, but it works (I pivoted the app format in the middle of development).
