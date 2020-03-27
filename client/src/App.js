@@ -21,6 +21,7 @@ function App() {
             <header className="border-bottom">
               <h1>Coronavirus Grapher</h1>
               <h3>Because it's interesting, but also because it sucks.</h3>
+              <p>Click on the blue plus button!</p>
             </header>
           </Col>
         </Row>

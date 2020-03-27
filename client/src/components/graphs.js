@@ -53,7 +53,7 @@ function Graphs() {
         <Container>
           <Row>
             <Col>
-              <ul className="nav">
+              <ul className="nav border-bottom mb-5">
                 {graphs.map((graph,i) => {
                   return (
                     <li key={i} className="nav-item">
@@ -76,7 +76,6 @@ function GraphSwitch({graphsByKey}) {
   let {graphID} = useParams()
   let graph = graphsByKey[graphID]
   let type = graph.graphType['__typename']
-  console.log(type)
   let GraphComponent = graphTypes[type].component
   return (<GraphComponent graph={graph}/>)
 }

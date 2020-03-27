@@ -53,7 +53,7 @@ function Chart({graphQuery, graphData,countryMap,provinceMap}) {
                 <DateIndicator startDate={graphQuery.variables.startDate} endDate={graphQuery.variables.endDate} />
                 <VictoryLegend x={0} y={0}
                     width="100%"
-                    height="100%"
+                    height="50vh"
                     title="Confirmed"
                     centerTitle
                     orientation="vertical"
