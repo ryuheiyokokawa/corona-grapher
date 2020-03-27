@@ -18,7 +18,7 @@ const AddButton = styled.button`
     border-radius: 50px;
 
     // Color
-    background: blue;
+    background: #383fe5;
     color: white;
     
     // Text

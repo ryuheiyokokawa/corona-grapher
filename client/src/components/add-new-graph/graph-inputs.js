@@ -97,7 +97,7 @@ function GraphInputs({onSuccess, submit, history}) {
                 <Form.Group>
                     <Form.Row>
                         <Form.Label>Title</Form.Label>
-                        <Col>
+                        <Col sm="12">
                             <Form.Control type="text" placeholder="title" value={title} onChange={(e) => {
                                 setTitle(e.target.value)
                             }}/>
@@ -107,7 +107,7 @@ function GraphInputs({onSuccess, submit, history}) {
                 <Form.Group>
                     <Form.Row>
                         <Form.Label>Type</Form.Label>
-                        <Col>
+                        <Col  sm="12">
                             <Form.Control type="select" as="select" onChange={(e) => {
                                 setType(e.target.value)
                             }}>
@@ -116,38 +116,34 @@ function GraphInputs({onSuccess, submit, history}) {
                                 <option value="stacked-bar">Stacked Bar</option>
                                 <option value="stacked-area">Stacked Area</option>
                             </Form.Control>
-                            <p>Line currently only plots confirmed.  Will add option later.</p>
+                            <p style={{fontSize:'10px'}}>Line currently only plots confirmed.  Will add option later.</p>
                         </Col>
                     </Form.Row>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Row>
-                        <Form.Label>Start Date</Form.Label>
-                        <Col>
+                        <Form.Group as={Col}>
+                            <Form.Label className="pr-2">Start Date</Form.Label>
                             <DatePicker 
                                 selected={startDate}
                                 onChange={date => setStartDate(date)}
                                 minDate={new Date(2020, 0, 22)} 
                                 maxDate={endDate}
                             />
-                        </Col>
-                    </Form.Row>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Row>
-                        <Form.Label>End Date</Form.Label>
-                        <Col>
+                        </Form.Group>
+                        
+                        <Form.Group as={Col}>
+                            <Form.Label className="pr-2">End Date</Form.Label>
                             <DatePicker
                                 selected={endDate}
                                 onChange={date => setEndDate(date)}
                                 minDate={startDate} 
                                 maxDate={new Date()}
                             />
-                        </Col>
+                        </Form.Group>
                     </Form.Row>
                 </Form.Group>
-                
         
                 {/* Choose based on chart type */}
                 {
@@ -232,7 +228,7 @@ function MultipleInputs({multiple, setMultiple}) {
     return (
         <Form.Group>
             <Form.Row className="pb-2">
-                <Button onClick={addRow}>Add Source</Button>
+                <Button onClick={addRow}>Add Country/Province</Button>
             </Form.Row>
             {multiple.map((current, i) => {
                 return (

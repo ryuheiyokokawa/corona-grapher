@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Switch,
   Route,
@@ -36,6 +36,7 @@ const graphTypes = {
 
 function Graphs() {
   const { data } = useQuery(GET_GRAPHS)
+  const [active,setActive] = useState(null)
   let graphs
   if(data.graphs.length) {
     graphs = data.graphs
@@ -55,9 +56,19 @@ function Graphs() {
             <Col>
               <ul className="nav border-bottom mb-5">
                 {graphs.map((graph,i) => {
+                  let linkClass = 'nav-link'
+                  let activeLinkClass = linkClass + ' active'
+                  let url_graph_id = window.location.href.split('graphs/')[1] //This is required to catch the case where we programmtically redirect from the input to the graph
+
+                  if(url_graph_id == graph.id) {
+                    linkClass = activeLinkClass
+                  } else if(active === i) {
+                    linkClass = activeLinkClass
+                  }
+                  
                   return (
                     <li key={i} className="nav-item">
-                      <Link className="nav-link" to={`/graphs/${graph.id}`} >{graph.title}</Link>
+                      <Link className={linkClass} to={`/graphs/${graph.id}`} onClick={()=>{setActive(i)}} >{graph.title}</Link>
                     </li>
                   )
                 })}
