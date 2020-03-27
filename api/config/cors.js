@@ -1,5 +1,11 @@
 'use strict'
 
+const Env = use("Env");
+
+const additional_cors = Env.get('CORS')
+let normal_cors = ['http://127.0.0.1:3333','http://localhost:3000','http://127.0.0.1:3000']
+additional_cors ? normal_cors.push(additional_cors) : normal_cors;
+
 module.exports = {
   /*
   |--------------------------------------------------------------------------
@@ -16,7 +22,7 @@ module.exports = {
   | Function - Receives the current origin and should return one of the above values.
   |
   */
-  origin: ['http://127.0.0.1:3333','http://localhost:3000','http://127.0.0.1:3000'],
+  origin: normal_cors,
 
   /*
   |--------------------------------------------------------------------------

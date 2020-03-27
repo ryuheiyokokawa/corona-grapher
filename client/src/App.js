@@ -5,6 +5,8 @@ import {
   Route,
 } from "react-router-dom";
 import {Col, Row, Container} from 'react-bootstrap'
+import ForkMeOnGithub from 'fork-me-on-github';
+
 
 import About from  './components/about'
 import Graphs from './components/graphs'
@@ -15,6 +17,12 @@ import './App.scss';
 function App() {
   return (
     <Router>
+      <ForkMeOnGithub
+        repo="https://github.com/ryuheiyokokawa/corona-grapher"
+        text="View on Github"
+        colorBackground="black"
+        colorOctocat="white"
+      />
       <Container>
         <Row>
           <Col>
