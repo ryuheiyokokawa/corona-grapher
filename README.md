@@ -13,6 +13,7 @@ You have the option of using various chart types including:
 - Pie
 - Stacked Bar
 - Stacked Area
+
 Some of the chart implementations are not perfect, but are based on some examples from Victory.
 The Line charts are probably the best implemented at the moment.
 
