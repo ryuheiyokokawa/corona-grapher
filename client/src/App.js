@@ -29,7 +29,7 @@ function App() {
             <header className="border-bottom">
               <h1>Coronavirus Grapher</h1>
               <h3>Because it's interesting, but also because it sucks.</h3>
-              <p>Click on the blue plus button! Data from <a href="https://github.com/CSSEGISandData/COVID-19/" target="_blank">John's Hopkins Github</a>.</p>
+              <p>Click on the blue plus button! Data from <a href="https://github.com/CSSEGISandData/COVID-19/" target="_blank">Johns Hopkins Github</a>.</p>
             </header>
           </Col>
         </Row>

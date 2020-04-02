@@ -22,7 +22,6 @@ cache.writeData({
     }
 })
 
-// TODO: Change below with environmental var. Make GraphQL config. 
 // Below uses the appolo client cache as part of the local state management.
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_SERVER,

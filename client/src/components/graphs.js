@@ -11,14 +11,20 @@ import { useQuery } from '@apollo/react-hooks';
 import { GET_GRAPHS } from '../queries/client'
 
 import LineGraph from './line'
+import LineAccelGraph from './line-accel';
 import PieGraph from './pie'
 import StackedBarGraph from './stacked-bar'
 import StackedAreaGraph from './stacked-area'
+
 
 const graphTypes = {
   line: {
     name: 'line',
     component: LineGraph
+  },
+  "line-accel": {
+    name:'line-accel',
+    component: LineAccelGraph
   },
   pie: {
     name: 'pie',

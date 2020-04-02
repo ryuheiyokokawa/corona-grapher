@@ -49,6 +49,7 @@ function GraphInputs({onSuccess, submit, history}) {
         }
     })
 
+
     useEffect(() => {
         if(submit) {//Submit is a parent state passed to this component to indicate send
             const graphType = {
@@ -110,17 +111,27 @@ function GraphInputs({onSuccess, submit, history}) {
                         <Col  sm="12">
                             <Form.Control type="select" as="select" onChange={(e) => {
                                 setType(e.target.value)
+                                if(e.target.value == 'line-accel') {
+                                    setStartDate(new Date(2020, 0, 22))
+                                    setEndDate(new Date())
+                                } else {
+                                    setStartDate(startDefault)
+                                    setEndDate(endDefault)
+                                }
                             }}>
                                 <option value="line">Line</option>
+                                <option value="line-accel">Line (Confirmed vs Delta)</option>
                                 <option value="pie">Pie</option>
                                 <option value="stacked-bar">Stacked Bar</option>
                                 <option value="stacked-area">Stacked Area</option>
                             </Form.Control>
-                            <p style={{fontSize:'10px'}}>Line currently only plots confirmed.  Will add option later.</p>
+                            {type === 'line' ? (<p style={{fontSize:'10px'}}>Line currently only plots confirmed.  Will add option later.</p>) : null }
+                            {type === 'line-accel' ? (<p style={{fontSize:'10px'}}>Line (Confirmed vs Delta) is a specific implementation I saw <a href="https://www.youtube.com/watch?v=54XLXg4fYsc" target="_blank">here</a>.  It shows whether or not COVID-19 is actually slowing down. Kudos to those guys for making this data relevant!</p>):null}
                         </Col>
                     </Form.Row>
                 </Form.Group>
-
+                
+                {type != 'line-accel'? (
                 <Form.Group>
                     <Form.Row>
                         <Form.Group as={Col}>
@@ -144,6 +155,7 @@ function GraphInputs({onSuccess, submit, history}) {
                         </Form.Group>
                     </Form.Row>
                 </Form.Group>
+                ): null}
         
                 {/* Choose based on chart type */}
                 {

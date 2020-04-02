@@ -19,6 +19,7 @@ function ProvinceSelect({country_id,onSelect}) {
                 <Typeahead
                     id="province"
                     options={sorted_provinces}
+                    selectHintOnEnter={true}
                     labelKey="name"
                     placeholder="Choose a province"
                     onChange={onSelect}

@@ -33,7 +33,7 @@ Frontend:
 - SASS (barely)
 
 ## Data Source
-John's Hopkin's Github: https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series
+Johns Hopkins Github: https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series
 
 ## How to run it.
 1. `npm install` in both the `api` and `client` directories
@@ -53,7 +53,7 @@ Yup, I haven't had time to add in validation.  I'm working on it.
 No tests either.  I'm probably going to re-write the input code.
 
 ## Data isn't being loaded into my DB
-Sometimes the John's Hopkins folks change the data structure so if it stops running right, it might be that.  Or you need to check your .env config.
+Sometimes the Johns Hopkins folks change the data structure so if it stops running right, it might be that.  Or you need to check your .env config.
 
 ## Why did you use Adonis and not Express
 I like Laravel. But I like Node.js better than PHP.

@@ -28,6 +28,7 @@ function CountrySelect({current, onSelect}) {
                 labelKey="name"
                 placeholder="Choose a country"
                 selected={country}
+                selectHintOnEnter={true}
                 onChange={(selection) => {
                     onSelect(selection)
                     setCountry(selection)
