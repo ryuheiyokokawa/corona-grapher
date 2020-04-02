@@ -51,7 +51,7 @@ class Process extends Command {
   }
   _init() {
     return new Promise((resolve,reject) => {
-      this.info("Starting data injestion from John's Hopkin's Github account");
+      this.info("Starting data injestion from Johns Hopkins Github account");
       this.countries = {}
       this.provinces = {}
       this.days = {}
