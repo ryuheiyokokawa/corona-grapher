@@ -10,12 +10,17 @@ That said, if you're curious about how bad Coronavirus is doing in different cou
 Sort of like above.  You can add new graphs and choose countries/provinces to compare along with date range.
 You have the option of using various chart types including:
 - Line
+- Line (confirmed vs confirmed delta)
 - Pie
 - Stacked Bar
 - Stacked Area
 
 Some of the chart implementations are not perfect, but are based on some examples from Victory.
 The Line charts are probably the best implemented at the moment.
+
+The most useful ones are Line and Line (confirmed vs confirmed delta).
+The latter uses ideas from [here](https://www.youtube.com/watch?v=54XLXg4fYsc).  The idea is that it can measure the velocity at which the virus is spreading on a log scale.  Thus, it shows whether things are slowing in down.
+
 
 ## Packages/Tech used
 Backend:
@@ -46,7 +51,7 @@ Johns Hopkins Github: https://github.com/CSSEGISandData/COVID-19/tree/master/css
 8. Mess around with it.
 
 ## Is there an online demo?
-Should I put one up? Let me know.
+Its now up at https://corona.noindex.co
 
 ## Frontend crashes a lot
 Yup, I haven't had time to add in validation.  I'm working on it.
