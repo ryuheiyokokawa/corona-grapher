@@ -18,15 +18,24 @@ const Route = use('Route')
 const GraphQLServer = use('GraphQLServer')
 
 
-//Route.on('/').render('welcome')
+Route.on('/').render('index')
 
 Route.post('/', (context) => {
     return GraphQLServer.handle(context)
 })
 
-Route.get('/graphiql', (context) => {
-    return GraphQLServer.handleUI(context)
+Route.get('/graphs', async ({response}) => {
+  response.redirect('/')
 })
+
+Route.get('/graphs/:id', async ({response}) => {
+  response.redirect('/')
+})
+
+
+//Route.get('/graphiql', (context) => {
+//    return GraphQLServer.handleUI(context)
+//})
   
 // or add options (example)
 // Route.get("/graphiql", (context) => {
