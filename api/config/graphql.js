@@ -7,7 +7,6 @@ module.exports = {
     debug: false,
     endpointURL: '/',
   },
-
   schema: join(__dirname, '../app/Schema'),
   resolvers: join(__dirname, '../app/Resolvers'),
 }

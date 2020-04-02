@@ -15,7 +15,7 @@ function LineAccelGraph({graph}) {
         countryMap[location.country.id] = location.country.name
         if(location.province) {
             graphLocations[i]['province_id'] = location.province.id
-            countryMap[location.province.id] = location.province.name
+            provinceMap[location.province.id] = location.province.name
         }
     })
 

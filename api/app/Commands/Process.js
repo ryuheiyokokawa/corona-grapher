@@ -19,13 +19,22 @@ const git_url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/maste
 const git_files = {
   confirmed:"csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv",
   deaths: "csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv",
-  recovered: "csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv"
+  recovered: "csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv",
+  confirmed_us:"csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv",
+  deaths_us:"csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"
 };
 const data_types = [
   'confirmed', 
   'deaths', 
   'recovered'
 ]
+
+const us_states_types = [
+  'confirmed_us',
+  'deaths_us'
+]
+
+const all_data_types = data_types.concat(us_states_types)
 
 
 class Process extends Command {
@@ -89,7 +98,7 @@ class Process extends Command {
   _csvToJsonAll() {
     return new Promise((resolve, reject) => {
       let promises = []
-      data_types.forEach((type,i) => {
+      all_data_types.forEach((type,i) => {
         promises[i] = this._csvToJson(type)
       })
       Promise.all(promises)
@@ -167,21 +176,35 @@ class Process extends Command {
 
   _storeProvinces() {
     return new Promise((resolve,reject) => {
-      data_types.forEach((type,i) => {
+      all_data_types.forEach((type,i) => {
         this[type + "_json"].forEach((data,i) => {
-          let country = data['Country/Region']
-          let province = data['Province/State']
-          if(province) {
-            this.provinces[province] = {//by using key value pair, its unique from the start.
-              id: 0,
-              name: province,
-              country_name: country,
-              country_data: this.countries[country],
-              lat: data['Lat'],
-              long: data['Long'],
+          if( data_types.includes(type) ) {//If we're pulling from global data
+            let country = data['Country/Region']
+            let province = data['Province/State']
+            if(province) {
+              this.provinces[province] = {//by using key value pair, its unique from the start.
+                id: 0,
+                name: province,
+                country_name: country,
+                country_data: this.countries[country],
+                lat: data['Lat'],
+                long: data['Long'],
+              }
+            }
+          } else if(us_states_types.includes(type)) { //If we're pulling from US states data
+            let country = 'US'
+            let province = data['Province_State']
+            if(province) {
+              this.provinces[province] = {
+                id:0,
+                name: province,
+                country_name: country,
+                country_data: this.countries[country],
+                lat: data['Lat'],
+                long: data['Long_']
+              }
             }
           }
-          
         })
       })
       let storage_promises = []
@@ -214,31 +237,60 @@ class Process extends Command {
 
   _storeDays() {
     return new Promise((resolve,reject) => {
-      data_types.forEach((type,i) => {
+      all_data_types.forEach((type,i) => {
         this[type + "_json"].forEach((data,i) => {
-          let country = data['Country/Region']
-          let province = data['Province/State']
-          
-          //some have no provincial data.
-          let unique_header = province ? `${this.countries[country].id}-${this.provinces[province].id}` : `${this.countries[country].id}`
-           
+
           let days_only = data
-          delete days_only['Country/Region']
-          delete days_only['Province/State']
-          delete days_only['Lat']
-          delete days_only['Long']
-          
-          for(let date in days_only) {
-            let affected = !days_only[date] ? 0 : days_only[date] //Had an issue where the data has nothing in it.
-            if(typeof this.days[`${unique_header}-${date}`] == 'undefined') {
-              this.days[`${unique_header}-${date}`] = {
-                country_id: this.countries[country].id,
-                province_id: province ? this.provinces[province].id : 0,
-                date: moment(date,'M/D/YYYY').format('YYYY-MM-DD')
-              }
+          let country, province
+
+          if(data_types.includes(type)) {
+            country = data['Country/Region']
+            province = data['Province/State']
+            delete days_only['Country/Region']
+            delete days_only['Province/State']
+            delete days_only['Lat']
+            delete days_only['Long']
+          } else if(us_states_types.includes(type)) {
+            country = 'US'
+            province = data['Province_State']
+            let delete_array = ['UID','iso2','iso3','code3','FIPS','Admin2','Province_State','Country_Region','Lat','Long_','Combined_Key']
+            for (let index = 0; index < delete_array.length; index++) {
+              delete days_only[delete_array[index]]
             }
-            this.days[`${unique_header}-${date}`][type] = parseInt(affected)
+            if(type === 'deaths_us') {
+              delete days_only['Population']//WTF!
+            }
           }
+
+          if(country === 'US' && province.length === 0) {
+            //Do nothing
+            //console.log(country,province)
+          } else{
+            let unique_header = province ? `${this.countries[country].id}-${this.provinces[province].id}` : `${this.countries[country].id}`
+            //Process the days_only
+            for(let date in days_only) {
+              let affected = !days_only[date] ? 0 : days_only[date] //Had an issue where the data has nothing in it.
+              if(typeof this.days[`${unique_header}-${date}`] == 'undefined') {
+                this.days[`${unique_header}-${date}`] = {
+                  country_id: this.countries[country].id,
+                  province_id: province ? this.provinces[province].id : 0,
+                  date: moment(date,'M/D/YYYY').format('YYYY-MM-DD')
+                }
+              }
+
+              //For the states data since each row is by county (a detail level that we currently do not support)
+              if(
+                typeof this.days[`${unique_header}-${date}`] != 'undefined' &&
+                typeof this.days[`${unique_header}-${date}`][ type.split('_')[0] ] != 'undefined'  
+                ) {
+                  let pastAffected = parseInt(this.days[`${unique_header}-${date}`][ type.split('_')[0] ])
+                  this.days[`${unique_header}-${date}`][ type.split('_')[0] ] = parseInt(affected) + pastAffected
+              } else {
+                this.days[`${unique_header}-${date}`][ type.split('_')[0] ] = parseInt(affected)
+              }
+            }//end of date-key builder
+
+          }//end of us data exclusion from global report
 
         })
       })

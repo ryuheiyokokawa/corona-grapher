@@ -31,6 +31,7 @@ function Chart({graphQuery, graphData,countryMap,provinceMap}) {
                 }
             }
         });
+        
         let location_name = location.province_id ? provinceMap[location.province_id] : countryMap[location.country_id]
         legend_data[i] = {
             name: location_name,
