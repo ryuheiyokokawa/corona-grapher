@@ -41,8 +41,6 @@ function Chart({graphQuery, graphData,countryMap,provinceMap}) {
         return null
     })
 
-    console.log(line_sources)
-
     return (
         <Row>
             <Col sm="10" >
