@@ -46,17 +46,7 @@ function Chart({graphQuery, graphData,countryMap,provinceMap}) {
     return (
         <Row>
             <Col sm="10" >
-                <VictoryChart 
-                    scale={{ x: 'log', y: 'log' }} 
-                    containerComponent={
-                        <VictoryVoronoiContainer
-                        mouseFollowTooltips
-                        voronoiDimension="x"
-                        labels={({datum}) => {
-                            return `${datum.style.location_name}: ${datum.y}`
-                        }}
-                        />
-                    }>
+                <VictoryChart scale={{ x: 'log', y: 'log' }} >
                     <VictoryAxis 
                         label="Confirmed"
                         fixLabelOverlap={true} 
