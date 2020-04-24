@@ -19,7 +19,7 @@ Some of the chart implementations are not perfect, but are based on some example
 The Line charts are probably the best implemented at the moment.
 
 The most useful ones are Line and Line (confirmed vs confirmed delta).
-The latter uses ideas from [here](https://www.youtube.com/watch?v=54XLXg4fYsc).  The idea is that it can measure the velocity at which the virus is spreading on a log scale.  Thus, it shows whether things are slowing in down.
+The latter uses ideas from [here](https://www.youtube.com/watch?v=54XLXg4fYsc).  The idea is that it can measure the velocity at which the virus is spreading on a log scale.  Thus, it shows whether things are slowing down.
 
 
 ## Packages/Tech used

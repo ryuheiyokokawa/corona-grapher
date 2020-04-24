@@ -2,7 +2,7 @@ import React from 'react'
 import {VictoryChart, VictoryLine, VictoryAxis, VictoryLabel, VictoryVoronoiContainer, VictoryLegend} from 'victory'
 import moment from 'moment'
 import {Col, Row} from 'react-bootstrap'
-import {lineColors} from '../graph-shared/colors'
+import {lineColors2} from '../graph-shared/colors'
 import DateIndicator from '../graph-shared/date-indicator'
 
 
@@ -36,7 +36,7 @@ function Chart({graphQuery, graphData,countryMap,provinceMap}) {
         legend_data[i] = {
             name: location_name,
             symbol: {
-                fill: lineColors[i]
+                fill: lineColors2[i]
             }
         }
         return null
@@ -71,7 +71,7 @@ function Chart({graphQuery, graphData,countryMap,provinceMap}) {
                     }} />
                     
                     {graphData.map((location,i) => {
-                        let stroke = lineColors[i]
+                        let stroke = lineColors2[i]
                         return (
                             <VictoryLine 
                                 style={{

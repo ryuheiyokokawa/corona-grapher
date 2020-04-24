@@ -187,8 +187,8 @@ class Process extends Command {
                 name: province,
                 country_name: country,
                 country_data: this.countries[country],
-                lat: data['Lat'],
-                long: data['Long'],
+                lat: parseFloat(data['Lat']) ? data['Lat'] : 0,
+                long: parseFloat(data['Long']) ? data['Long'] : 0,
               }
             }
           } else if(us_states_types.includes(type)) { //If we're pulling from US states data
@@ -200,8 +200,8 @@ class Process extends Command {
                 name: province,
                 country_name: country,
                 country_data: this.countries[country],
-                lat: data['Lat'],
-                long: data['Long_']
+                lat: parseFloat(data['Lat']) ? data['Lat'] : 0,
+                long: parseFloat(data['Long_']) ? data['Long_'] : 0
               }
             }
           }

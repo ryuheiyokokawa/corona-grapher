@@ -16,6 +16,19 @@ export const lineColors = [
     '#ffa600',
 ]
 
+
+export const lineColors2 = [
+    'red',
+    'green',
+    'blue',
+    'yellow',
+    'pink',
+    'orange',
+    'purple',
+    'brown',
+    'indigo'
+]
+
 export const colorScales = [
     'green',
     'red',
